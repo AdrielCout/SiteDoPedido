@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site do Dripp</title>
+    <style>
+        /* Estilo base do corpo da página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Estilo base para todas as páginas */
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Classe que torna a página visível */
+        .page.active {
+            display: flex;
+        }
+
+        /* Estilo específico para a página 1 */
+        #page1.active {
+            background: linear-gradient(to right,#dae2f8, #d6A4a4);
+        }
+
+        #page1.active h1 {
+            border-color: rgb(0, 0, 0);
+            border-style: solid;
+            padding: 15px;
+            border-radius: 30px 190px 30px 190px;
+            background-color: #F2DDDC;
+           font-family: 'Segoe Script', cursive;
+        }
+
+        
+        /* Estilo específico para a página 2 (nova versão) */
+        #page2.active {
+            background: linear-gradient(to bottom, #73eef6,#f67a73);
+        }
+
+        #page2.active h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .content .box {
+            width: 150px;
+            height: 150px;
+            background-color: rgba(196, 140, 179, 0.8);
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        #page3 .content .box {
+            width: 150px;
+            height: 150px;
+            background-color: rgba(147, 180, 120, 0.8);
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .content .box:hover {
+            transform: scale(1.1);
+            background-color: rgba(196, 140, 179, 1);
+        }
+    
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        .modal img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .modal button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #0056b3;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Estilo específico para a página 3 */
+        #page3.active {
+            background: linear-gradient(to top, #43c6ac, #f8ffae);
+        }
+
+        #page3.active h1 {
+            color: #222;
+            font-style: italic;
+        }
+
+        /* Estilo específico para a página 4 */
+        #page4.active {
+            background: linear-gradient(to bottom, #92736c, #fdf1f5);
+        }
+
+        #page4.active h1 {
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Estilo da barra de navegação */
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Estilo dos botões de navegação */
+        .navigation button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Efeito hover nos botões de navegação */
+        .navigation button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo dos botões de escolha (Sim/Não) */
+        .choice-buttons {
+            display: flex;
+            gap: 50px;
+        }
+
+        /* Estilo base dos botões de escolha */
+        .choice-buttons button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Efeito hover geral nos botões de escolha */
+        .choice-buttons button:hover {
+            color: white;
+        }
+
+        /* Efeito hover específico para o botão SIM */
+        .choice-buttons .yes:hover {
+            background-color: green;
+        }
+
+        /* Efeito hover específico para o botão NÃO */
+        .choice-buttons .no:hover {
+            background-color: red;
+        }
+        /* Estilo para a nova página */
+#pageExtra.active {
+    background: linear-gradient(to right, #e0eaf3, #cfdef3);
+    overflow-y: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+#pageExtra h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.gallery img {
+    width: 30%;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.30);
+    transition: transform 0.3s;
+}
+
+#startScroll {
+    padding: 15px 30px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#startScroll:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Primeira página com mensagem de boas-vindas -->
+    <div id="page1" class="page active">
+        <div>
+            <h1>Bem Vinda Linda</h1>
+            <img src="imagens/Flor_nao_hd-removebg-preview.png" alt="romantico">
+        </div>
+        <div>
+            <h2>Vou te apresentar alguns bons motivos pra você me dar uma chance</h2>
+            <button id="playButton">Clique Aqui</button>
+            <audio id="audioPlayer" src="audios/musicaromantica.mp3"></audio>
+        </div>
+    </div>
+
+    <!-- Segunda página com motivos de gostar (agora interativa) -->
+    <div id="page2" class="page">
+        <div>
+            <h1>Motivos no qual eu gosto muito de você</h1>
+        </div>
+        <div class="content">
+            <div class="box" data-text="Sorriso: Toda vez que você sorri eu me quebro todinho e fico sem graça" data-image="imagens\ezgif-1-3d03ae2043.gif" >Motivo 1</div>
+            <div class="box" data-text="Divertida: Nunca me sinto entediado com você por perto" data-image="imagens\aa.gif">Motivo 2</div>
+            <div class="box" data-text="Senso de Humor Duvidoso: Eu ainda abri a boca aqui 😭" data-image="imagens\0113(1).gif">Motivo 3</div>
+            <div class="box" data-text="ECA MIJARU NA PISCINA" data-image="imagens\eca mijaru.jpg">Motivo 4</div>
+            <div class="box" data-text="Gata: Não cheguei a conhecer muitas anãs bonitas mas tu é realmente desbalanceada de linda " data-image="imagens\linda.gif">Motivo 5</div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+    <div class="modal">
+        <img id="modalImage" src="" alt="Imagem do motivo">
+        <p id="modalText"></p>
+        <button id="closeModal">Fechar</button>
+    </div>
+
+    
+    <div id="page3" class="page">
+        <div>
+            <h1>Motivos para você aceitar me dar uma chance</h1>
+        </div>
+        <div class="content">
+            <div class="box" data-text="Sou Bonito: Minha tia que disse" data-image="imagens\eu.jpg">Motivo 1</div>
+            <div class="box" data-text="Sou uma ótima companhia e sempre busco o conforto de quem eu amo, tipo você (Acho que o zíper n tava mt bem nessa foto)" data-image="imagens\Imagem do WhatsApp de 2025-01-13 à(s) 18.50.39_4081871e.jpg">Motivo 2</div>
+            <div class="box" data-text="Estou me esforçando todo dia pra ter um bom futuro e ficar rico Obs: Esse código de fundo é o desse site" data-image="imagens\futuro.jpg">Motivo 3</div>
+            <div class="box" data-text="Acho que a gente combina muito (e também já ouvi isso de muita gente)" data-image="imagens\combina.jpg">Motivo 4</div>
+            <div class="box" data-text="Eu acho que to merecendo uma princesa na minha vida " data-image="imagens\merecendo.jpg">Motivo 5</div>
+            <div class="box" data-text="Álias isso aqui é oque eu to pensando que é?" data-image="imagens\pensando.jpg">Extra</div>
+        </div>
+    </div>
+
+      <!-- Página adicional com 13 imagens e rolagem automática -->
+    <div id="pageExtra" class="page">
+        <div>
+            <h1>Galeria Especial</h1>
+            <button id="startScroll">Clique Aqui</button>
+            <audio id="scrollAudio" src="audios\JVKE - golden hour (Official Lyric Video) - JVKE.mp3"></audio>
+        </div>
+        <div class="gallery">
+            <!-- Substitua os valores src com os caminhos das suas 13 imagens -->
+            <img src="imagens\rah\ovo é bom.jpg" alt="Imagem 1">
+            <img src="imagens\rah\nerd sequestrado.jpg" alt="Imagem 2">
+            <img src="imagens\rah\a chuta velhas.gif" alt="Imagem 3">
+            <img src="imagens\rah\Afogamento.gif" alt="Imagem 4">
+            <img src="imagens\rah\Eu sem entender porra nenhuma.jpg" alt="Imagem 5">
+            <img src="imagens\rah\Imagem do WhatsApp de 2025-01-14 à(s) 08.10.39_4d139feb.jpg" alt="Imagem 8">
+            <img src="imagens\rah\imundiça.jpg" alt="Imagem 8">
+            <img src="imagens\rah\esse.jpg" alt="Imagem 8">
+            <img src="imagens\rah\Imagem do WhatsApp de 2025-01-13 à(s) 18.42.49_4e735ff6.jpg" alt="Imagem 6">
+            <img src="imagens\rah\Imagem do WhatsApp de 2025-01-14 à(s) 08.11.10_f8b8354f.jpg" alt="Imagem 9">
+            <img src="imagens\rah\Anuncie aqui.jpg" alt="Imagem 10">
+            <img src="imagens\rah\banho.jpg" alt="Imagem 11">
+            <img src="imagens\rah\Arquiteta.jpg" alt="Imagem 12">
+           
+        </div>
+    </div>
+
+    <div id="page4" class="page">
+        <div>
+            <h1>Me daria uma chance?</h1>
+        </div>
+        <div class="choice-buttons">
+            <button class="yes">SIM</button>
+            <button class="no">NÃO</button>
+        </div>
+    </div>
+
+    <!-- Botões de navegação entre páginas -->
+    <div class="navigation">
+        <button id="prevPage"><span>←</span> Página Anterior</button>
+        <button id="nextPage">Próxima Página <span>→</span></button>
+    </div>
+
+    <script>
+        // Seleciona todos os elementos com classe 'page'
+        const pages = document.querySelectorAll('.page');
+        // Seleciona os botões de navegação
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        // Controla qual página está atualmente visível
+        let currentPage = 0;
+
+        // Função para atualizar qual página deve ser mostrada
+        function updatePage() {
+            pages.forEach((page, index) => {
+                page.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        // Evento de clique para voltar uma página
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePage();
+            }
+        });
+
+        // Evento de clique para avançar uma página
+        nextButton.addEventListener('click', () => {
+            if (currentPage < pages.length - 1) {
+                currentPage++;
+                updatePage();
+            }
+        });
+
+        // Inicializa a página
+        updatePage();
+
+        // Tocar/pausar música ao clicar no botão
+        const playButton = document.getElementById('playButton');
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        playButton.addEventListener('click', function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play(); // Toca a música
+                playButton.textContent = 'Pausar Música'; // Muda o texto do botão
+            } else {
+                audioPlayer.pause(); // Pausa a música
+                playButton.textContent = 'Clica Aqui'; // Restaura o texto do botão
+            }
+        });
+
+        // Lógica para exibir o modal de imagem e texto ao clicar nas caixas
+        const modal = document.querySelector('.modal');
+        const overlay = document.querySelector('.overlay');
+        const modalImage = document.getElementById('modalImage');
+        const modalText = document.getElementById('modalText');
+        const closeModal = document.getElementById('closeModal');
+        const boxes = document.querySelectorAll('.box');
+
+        boxes.forEach(box => {
+            box.addEventListener('click', () => {
+                const text = box.getAttribute('data-text');
+                const image = box.getAttribute('data-image');
+
+                modalText.textContent = text;
+                modalImage.src = image;
+
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+
+        overlay.addEventListener('click', () => {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+        // Função para iniciar a rolagem automática e tocar a música
+const startScrollButton = document.getElementById('startScroll');
+const scrollAudio = document.getElementById('scrollAudio');
+const galleryImages = document.querySelectorAll('.gallery img');
+
+startScrollButton.addEventListener('click', () => {
+    scrollAudio.play();
+    galleryImages.forEach((img, index) => {
+        setTimeout(() => {
+            img.style.opacity = '1';
+        }, index * 2000); // Exibe cada imagem com um intervalo de 500ms
+    });
+
+    document.getElementById('pageExtra').scroll({
+        top: document.getElementById('pageExtra').scrollHeight,
+        behavior: 'smooth',
+    });
+});
+
+    </script>
+</body>
+</html>
