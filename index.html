@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Site do Dripp</title>
     <style>
+        @font-face {
+  font-family: 'MinhaFonte';
+  src: url('font\Dreaming.otf') format('opentype');
+}
+
+body {
+  font-family: 'Dreaming', sans-serif;
+}
+
         /* Estilo base do corpo da página */
         body {
             font-family: Arial, sans-serif;
@@ -38,14 +47,28 @@
         #page1.active {
             background: linear-gradient(to right,#dae2f8, #d6A4a4);
         }
+        /* Ocultar o botão "Página Anterior" na página 1 */
+#page1.active ~ .navigation #prevPage {
+    display: none;
+}
+
+/* Ocultar os botões de navegação na página 4 */
+#page4.active ~ .navigation {
+    display: none;
+}
+
 
         #page1.active h1 {
-            border-color: rgb(0, 0, 0);
-            border-style: solid;
+           
             padding: 15px;
             border-radius: 30px 190px 30px 190px;
-            background-color: #F2DDDC;
+            background: linear-gradient(to right, #e3aadd, #f4e7f8);
            font-family: 'Segoe Script', cursive;
+        }
+        #page1.active h2{
+            font-family: 'Nerd Fonts', sans-serif;
+
+
         }
 
         
@@ -162,6 +185,15 @@
             color: #000;
             font-weight: bold;
         }
+        #page4 video{
+            -webkit-border-radius: 60px;
+            -moz-border-radius: 60px;
+            border-radius: 60px;
+            height: 350px;
+            width: auto;
+            
+
+        }
 
         /* Estilo da barra de navegação */
         .navigation {
@@ -269,6 +301,81 @@
     background-color: #0056b3;
 }
 
+/* Estilo para o modal de confirmação */
+.confirmation-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        .confirmation-modal button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .confirmation-modal button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos da página final de decisão */
+        /* Estilos para a página final de decisão */
+#finalPage {
+    display: none;
+    text-align: center;
+    background-color: #252525;
+    height: 100vh;  /* Ocupa toda a altura da tela */
+    position: fixed; /* Fixa a página no topo */
+    top: 0; /* Começa no topo da tela */
+    left: 0; /* Começa à esquerda da tela */
+    width: 100%; /* Ocupa toda a largura da tela */
+    z-index: 9999; /* Assegura que estará sobre as outras páginas */
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+#finalPage h1{
+    font-style: italic;
+    padding: 20px;
+    font-size: 24px;
+    color: white;
+    font-family: Dreaming, sans-serif;
+}
+#page5{
+    background: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+    
+}
+
+        
+
+        /* Efeito de transição lenta */
+        .fade-in {
+            animation: fadeIn 3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -347,23 +454,82 @@
         </div>
     </div>
 
+    <!-- Página de decisão -->
     <div id="page4" class="page">
         <div>
             <h1>Me daria uma chance?</h1>
         </div>
-        <div class="choice-buttons">
+    
+        <!-- Vídeo para o botão NÃO -->
+        <div id="videoContainerNo" style="display: none; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);">
+            <video id="videoToShowNo" >
+                <source src="finalbom\WaitTDLLILY.mp4" type="video/mp4"> <!-- Substitua com o caminho do seu vídeo "NÃO" -->
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+        </div>
+    
+        <!-- Vídeo para o botão SIM -->
+        <div id="videoContainerYes" style="display: none; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);">
+            <video id="videoToShowYes" >
+                <source src="finalbom\Yippie.mp4" type="video/mp4"> <!-- Substitua com o caminho do seu vídeo "SIM" -->
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+        </div>
+    
+        <div class="choice-buttons" style="position: relative; z-index: 1;"> <!-- Adiciona z-index ao botão para garantir que fique acima -->
             <button class="yes">SIM</button>
             <button class="no">NÃO</button>
         </div>
     </div>
+
 
     <!-- Botões de navegação entre páginas -->
     <div class="navigation">
         <button id="prevPage"><span>←</span> Página Anterior</button>
         <button id="nextPage">Próxima Página <span>→</span></button>
     </div>
+</div>
+
+<!-- Modal de confirmação quando o "NÃO" é clicado -->
+<div id="confirmationModal" class="confirmation-modal">
+    <h2>É essa a sua decisão final?</h2>
+    <button id="confirmYes">SIM</button>
+    <button id="confirmNo">Não, pera</button>
+</div>
+
+<!-- Página final após confirmação -->
+<div id="finalPage" class="page fade-in">
+    <div>
+        <img style="
+            border-radius: 50px;" src="galeria\Final ruim.jpg" alt="imgfinalruim">
+        <h1>Certo, me avise de sua decisão final.<br>
+        Perdão pro insistir tanto</h1>     
+    </div>
+</div>
+
+<div id="page5" class="page">
+    <h1>Bem-vindo à nova página!</h1>
+    <p>Aqui está a página para a qual você será redirecionado após clicar em SIM.</p>
+</div>
+
 
     <script>
+        function navegarParaPagina() {
+    const yesButton = document.querySelector('.yes');  // Botão SIM
+    const pages = document.querySelectorAll('.page');  // Páginas no HTML
+
+    yesButton.addEventListener('click', () => {
+        // Esconde todas as páginas
+        pages.forEach(page => page.classList.remove('active'));
+
+        // Exibe a nova página (por exemplo, #page5)
+        const page5 = document.getElementById('page5');
+        page5.classList.add('active');  // Torna a nova página visível
+    });
+}
+
+navegarParaPagina(); // Chama a função para inicializar a navegação
+
         // Seleciona todos os elementos com classe 'page'
         const pages = document.querySelectorAll('.page');
         // Seleciona os botões de navegação
@@ -397,7 +563,70 @@
 
         // Inicializa a página
         updatePage();
+         // Lógica para o botão "NÃO"
+         const noButton = document.querySelector('.no');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const confirmYesButton = document.getElementById('confirmYes');
+        const confirmNoButton = document.getElementById('confirmNo');
+        const finalPage = document.getElementById('finalPage');
 
+        noButton.addEventListener('click', () => {
+            confirmationModal.style.display = 'block';  // Exibe o modal de confirmação
+        });
+
+        // Se clicar em "SIM" na confirmação, transição para a página final
+        confirmYesButton.addEventListener('click', () => {
+            confirmationModal.style.display = 'none';
+            finalPage.style.display = 'block'; // Exibe a página final
+            setTimeout(() => {
+                finalPage.style.display = 'none'; // Esconde após alguns segundos
+            }, 4000000);  // Exibe por 4 segundos
+        });
+        function controlarVideoNoBotao() {
+        const noButton = document.querySelector('.no');
+        const videoContainerNo = document.getElementById('videoContainerNo');
+        const videoToShowNo = document.getElementById('videoToShowNo');
+
+        noButton.addEventListener('mouseenter', () => {
+            videoContainerNo.style.display = 'block';
+            videoToShowNo.play();
+        });
+
+        noButton.addEventListener('mouseleave', () => {
+            videoContainerNo.style.display = 'none';
+            videoToShowNo.pause();
+            videoToShowNo.currentTime = 0;
+        });
+    }
+
+    // Função que controla a exibição e o controle do vídeo para o botão "SIM"
+    function controlarVideoSimBotao() {
+        const yesButton = document.querySelector('.yes');
+        const videoContainerYes = document.getElementById('videoContainerYes');
+        const videoToShowYes = document.getElementById('videoToShowYes');
+
+        yesButton.addEventListener('mouseenter', () => {
+            videoContainerYes.style.display = 'block';
+            videoToShowYes.play();
+        });
+
+        yesButton.addEventListener('mouseleave', () => {
+            videoContainerYes.style.display = 'none';
+            videoToShowYes.pause();
+            videoToShowYes.currentTime = 0;
+        });
+    }
+
+    // Chama as funções para ativar a funcionalidade dos dois botões
+    controlarVideoNoBotao();
+    controlarVideoSimBotao();
+
+
+
+        // Se clicar em "Não, pera", retorna para a página anterior
+        confirmNoButton.addEventListener('click', () => {
+            confirmationModal.style.display = 'none';
+        });
         // Tocar/pausar música ao clicar no botão
         const playButton = document.getElementById('playButton');
         const audioPlayer = document.getElementById('audioPlayer');
@@ -459,7 +688,31 @@ startScrollButton.addEventListener('click', () => {
         top: document.getElementById('pageExtra').scrollHeight,
         behavior: 'smooth',
     });
+    // Função para atualizar qual página deve ser mostrada
+function updatePage() {
+    pages.forEach((page, index) => {
+        page.classList.toggle('active', index === currentPage);
+    });
+
+    // Esconde o botão "Página Anterior" na página 1
+    if (currentPage === 0) {
+        prevButton.style.display = 'none';
+    } else {
+        prevButton.style.display = 'block';
+    }
+
+    // Esconde os botões de navegação na página 4
+    if (currentPage === 3) {
+        document.querySelector('.navigation').style.display = 'none';
+    } else {
+        document.querySelector('.navigation').style.display = 'flex';
+    }
+}
+
+
 });
+
+
 
     </script>
 </body>
