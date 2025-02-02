@@ -359,7 +359,96 @@ body {
     background: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
     
 }
+@media (max-width: 768px) {
+        body {
+            height: auto;
+            min-height: 100vh;
+        }
 
+        #page1.active h1 {
+            font-size: 1.5rem;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 15px 95px 15px 95px;
+        }
+
+        #page1.active h2 {
+            font-size: 1rem;
+            padding: 0 10px;
+        }
+
+        .content .box {
+            width: 40%;
+            height: 120px;
+            margin: 5px;
+        }
+
+        #page4 video {
+            width: 90%;
+            height: auto;
+            border-radius: 30px;
+        }
+
+        .navigation {
+            bottom: 10px;
+            flex-direction: column;
+            width: 90%;
+        }
+
+        .navigation button {
+            width: 100%;
+            padding: 12px;
+        }
+
+        .gallery img {
+            width: 45%;
+            max-width: 150px;
+        }
+
+        .modal {
+            width: 90%;
+            padding: 10px;
+        }
+
+        #startScroll {
+            width: 90%;
+            margin: 10px auto;
+        }
+
+        .choice-buttons {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .choice-buttons button {
+            width: 200px;
+            padding: 15px;
+        }
+
+        #page1.active img {
+            width: 150px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .content .box {
+            font-size: 0.9rem;
+            height: 100px;
+        }
+
+        #page1.active h1 {
+            font-size: 1.2rem;
+        }
+
+        .gallery img {
+            width: 80%;
+        }
+
+        #page4 video {
+            width: 100%;
+            border-radius: 20px;
+        }
+    }
         
 
         /* Efeito de transição lenta */
@@ -374,6 +463,7 @@ body {
             to {
                 opacity: 1;
             }
+    
         }
 
     </style>
@@ -514,6 +604,7 @@ body {
 
 
     <script>
+        let fadeInterval;
         function navegarParaPagina() {
     const yesButton = document.querySelector('.yes');  // Botão SIM
     const pages = document.querySelectorAll('.page');  // Páginas no HTML
@@ -540,10 +631,33 @@ navegarParaPagina(); // Chama a função para inicializar a navegação
 
         // Função para atualizar qual página deve ser mostrada
         function updatePage() {
-            pages.forEach((page, index) => {
-                page.classList.toggle('active', index === currentPage);
-            });
-        }
+    // Verifica se está saindo da página Extra
+    if (pages[3].classList.contains('active') && currentPage !== 3) {
+        startFadeOut();
+    }
+
+    pages.forEach((page, index) => {
+        page.classList.toggle('active', index === currentPage);
+    });
+
+    // Restante do código existente...
+}
+function startFadeOut() {
+    if (!scrollAudio.paused) {
+        clearInterval(fadeInterval);
+        fadeInterval = setInterval(() => fadeAudio(), 100);
+    }
+}
+
+function fadeAudio() {
+    if (scrollAudio.volume > 0.1) {
+        scrollAudio.volume -= 0.05;
+    } else {
+        scrollAudio.volume = 0;
+        scrollAudio.pause();
+        clearInterval(fadeInterval);
+    }
+}
 
         // Evento de clique para voltar uma página
         prevButton.addEventListener('click', () => {
